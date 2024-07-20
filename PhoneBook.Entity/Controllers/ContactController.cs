@@ -36,6 +36,7 @@ namespace PhoneBook.Entity.Controllers
         internal static void EditContact(Contact contact)
         {
             using var db = new ContactContext();
+
             db.Update(contact);
 
             db.SaveChanges();

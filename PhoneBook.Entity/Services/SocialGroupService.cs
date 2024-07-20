@@ -18,8 +18,8 @@ namespace PhoneBook.Entity.Services
 
         internal static void DeleteSocialGroup()
         {
-            var socialGroupId = GetSocialGroupOptionInput();
-            SocialGroupController.DeleteSocialGroup(new SocialGroup { SocialGroupId = socialGroupId });
+            var socialGroup = GetSocialGroupOptionInput();
+            SocialGroupController.DeleteSocialGroup(socialGroup);
         }
 
         internal static void GetSocialGroups()
@@ -28,7 +28,25 @@ namespace PhoneBook.Entity.Services
             UserInterface.ShowSocialGroupsTable(socialGroups);
         }
 
-        internal static int GetSocialGroupOptionInput()
+        internal static void EditSocialGroup()
+        {
+            var socialGroup = GetSocialGroupOptionInput();
+
+            socialGroup.Name = AnsiConsole.Confirm("Edit Name?")
+                ? AnsiConsole.Ask<string>("Enter new name: ")
+                : socialGroup.Name;
+
+      
+            SocialGroupController.EditSocialGroup(socialGroup);
+        }
+
+        internal static void GetSocialGroup()
+        {
+            var socialGroup = GetSocialGroupOptionInput();
+            UserInterface.ShowSocialGroup(socialGroup);
+        }
+
+        internal static SocialGroup GetSocialGroupOptionInput()
         {
             var socialGroups = SocialGroupController.GetSocialGroups();
             var socialGroupsArray = socialGroups.Select(c => c.Name).ToArray();
@@ -37,10 +55,9 @@ namespace PhoneBook.Entity.Services
                                 .Title("Select a contact")
                                 .AddChoices(socialGroupsArray)
                                 );
-            var id = socialGroups.Single(c => c.Name == socialGroupName).SocialGroupId;
-            var socialGroup = ContactController.GetContactById(id);
+            var socialGroup = socialGroups.Single(c => c.Name == socialGroupName);
 
-            return id;
+            return socialGroup;
         }
     }
 }

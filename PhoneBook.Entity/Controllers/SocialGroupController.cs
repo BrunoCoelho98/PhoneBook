@@ -1,4 +1,5 @@
-﻿using PhoneBook.Entity.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PhoneBook.Entity.Models;
 
 namespace PhoneBook.Entity.Controllers
 {
@@ -23,11 +24,22 @@ namespace PhoneBook.Entity.Controllers
             db.SaveChanges();
         }
 
+        internal static void EditSocialGroup(SocialGroup socialGroup)
+        {
+            using var db = new ContactContext();
+
+            db.Update(socialGroup);
+
+            db.SaveChanges();
+        }
+
         internal static List<SocialGroup> GetSocialGroups()
         {
             using var db = new ContactContext();
 
-            var socialGroups = db.SocialGroups.ToList();
+            var socialGroups = db.SocialGroups
+                .Include(x => x.Contacts)
+                .ToList();
 
             return socialGroups;
         }

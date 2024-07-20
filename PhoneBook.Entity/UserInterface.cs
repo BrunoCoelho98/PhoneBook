@@ -22,6 +22,8 @@ namespace PhoneBook.Entity
                                               .AddChoices(
                         MenuOption.AddSocialGroup,
                         MenuOption.DeleteSocialGroup,
+                        MenuOption.EditSocialGroup,
+                        MenuOption.ViewSocialGroup,
                         MenuOption.ViewAllSocialGroups,                    
                         MenuOption.AddContact,
                         MenuOption.DeleteContact,
@@ -37,6 +39,12 @@ namespace PhoneBook.Entity
                         break;
                     case MenuOption.DeleteSocialGroup:
                         SocialGroupService.DeleteSocialGroup();
+                        break;
+                    case MenuOption.EditSocialGroup:
+                        SocialGroupService.EditSocialGroup();
+                        break;
+                    case MenuOption.ViewSocialGroup:
+                        SocialGroupService.GetSocialGroup();
                         break;
                     case MenuOption.ViewAllSocialGroups:
                         SocialGroupService.GetSocialGroups();
@@ -113,6 +121,22 @@ SocialGroup: {contact.SocialGroup.Name}");
             }
 
             AnsiConsole.Write(table);
+
+            Console.WriteLine("Enter a key to continue");
+            Console.ReadLine();
+            Console.Clear();
+        }
+
+        static internal void ShowSocialGroup(SocialGroup socialGroup)
+        {
+            var panel = new Panel($@"SocialGroupId: {socialGroup.SocialGroupId}
+Name: {socialGroup.Name}
+Contact Count: {socialGroup.Contacts.Count}");
+            panel.Header = new PanelHeader($"{socialGroup.Name}");
+            panel.Padding = new Padding(2, 2, 2, 2);
+
+            AnsiConsole.Write(panel);
+            ShowContactsTable(socialGroup.Contacts);
 
             Console.WriteLine("Enter a key to continue");
             Console.ReadLine();

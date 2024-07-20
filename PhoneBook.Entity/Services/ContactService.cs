@@ -12,7 +12,7 @@ namespace PhoneBook.Entity.Services
             contact.Name = AnsiConsole.Ask<string>("Enter name: ");
             contact.PhoneNumber = AnsiConsole.Ask<string>("Enter phone number: ");
             contact.Email = AnsiConsole.Ask<string>("Enter email: ");
-            contact.SocialGroupId = SocialGroupService.GetSocialGroupOptionInput();
+            contact.SocialGroupId = SocialGroupService.GetSocialGroupOptionInput().SocialGroupId;
 
             ContactController.AddContact(contact);
         }
@@ -39,6 +39,9 @@ namespace PhoneBook.Entity.Services
                 ? AnsiConsole.Ask<string>("Enter new email: ")
                 : contact.Email;
 
+            contact.SocialGroup = AnsiConsole.Confirm("Edit Social Group?")
+                ? SocialGroupService.GetSocialGroupOptionInput()
+                : contact.SocialGroup;
 
 
             ContactController.EditContact(contact);

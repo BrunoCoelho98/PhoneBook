@@ -6,6 +6,8 @@
         {
             AddSocialGroup,
             DeleteSocialGroup,
+            EditSocialGroup,
+            ViewSocialGroup,
             ViewAllSocialGroups,
             AddContact,
             DeleteContact,
