@@ -15,12 +15,14 @@ namespace PhoneBook.Entity
 
             while (isRunning)
             {
+                Console.Clear();
                 var option = AnsiConsole.Prompt(
                     new SelectionPrompt<MenuOption>()
                         .Title("What would you like to do?")
                                               .AddChoices(
                         MenuOption.AddSocialGroup,
-                        MenuOption.ViewAllSocialGroups,
+                        MenuOption.DeleteSocialGroup,
+                        MenuOption.ViewAllSocialGroups,                    
                         MenuOption.AddContact,
                         MenuOption.DeleteContact,
                         MenuOption.EditContact,
@@ -33,11 +35,14 @@ namespace PhoneBook.Entity
                     case MenuOption.AddSocialGroup:
                         SocialGroupService.AddSocialGroup();
                         break;
+                    case MenuOption.DeleteSocialGroup:
+                        SocialGroupService.DeleteSocialGroup();
+                        break;
                     case MenuOption.ViewAllSocialGroups:
                         SocialGroupService.GetSocialGroups();
                         break;
                     case MenuOption.AddContact:
-                        ContactController.AddContact();
+                        ContactService.AddContact();
                         break;
                     case MenuOption.DeleteContact:
                         ContactService.DeleteContact();
@@ -58,7 +63,8 @@ namespace PhoneBook.Entity
         internal static void ShowContact(Contact contact)
         {
             var panel = new Panel($@"ContactId: {contact.ContactId}
-Name: {contact.Name}");
+Name: {contact.Name}
+SocialGroup: {contact.SocialGroup.Name}");
                 panel.Header = new PanelHeader("Contact Information");
                 panel.Padding = new Padding(2, 2, 2, 2);
                 
@@ -76,13 +82,15 @@ Name: {contact.Name}");
             table.AddColumn("Name");
             table.AddColumn("Phone Number");
             table.AddColumn("Email");
+            table.AddColumn("Social Group");
 
             foreach (var contact in contacts)
             {
                 table.AddRow(contact.ContactId.ToString(), 
                     contact.Name,
                     contact.PhoneNumber,
-                    contact.Email);
+                    contact.Email,
+                    contact.SocialGroup.Name);
             }
 
             AnsiConsole.Write(table);

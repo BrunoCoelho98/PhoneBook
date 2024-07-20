@@ -6,6 +6,17 @@ namespace PhoneBook.Entity.Services
 {
     internal class ContactService
     {
+        internal static void AddContact()
+        {
+            var contact = new Contact();
+            contact.Name = AnsiConsole.Ask<string>("Enter name: ");
+            contact.PhoneNumber = AnsiConsole.Ask<string>("Enter phone number: ");
+            contact.Email = AnsiConsole.Ask<string>("Enter email: ");
+            contact.SocialGroupId = SocialGroupService.GetSocialGroupOptionInput();
+
+            ContactController.AddContact(contact);
+        }
+        
         internal static void DeleteContact()
         {
             var contact = GetContactOptionInput();

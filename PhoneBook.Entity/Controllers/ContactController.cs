@@ -1,16 +1,13 @@
-﻿using PhoneBook.Entity.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PhoneBook.Entity.Models;
 using Spectre.Console;
 
 namespace PhoneBook.Entity.Controllers
 {
     internal class ContactController
     {
-        internal static void AddContact()
+        internal static void AddContact(Contact contact)
         {
-            var contact = new Contact();
-            contact.Name = AnsiConsole.Ask<string>("Enter name: ");
-            contact.PhoneNumber = AnsiConsole.Ask<string>("Enter phone number: ");
-            contact.Email = AnsiConsole.Ask<string>("Enter email: ");
 
             using var db = new ContactContext();
 
@@ -29,7 +26,9 @@ namespace PhoneBook.Entity.Controllers
         internal static Contact GetContactById(int id)
         {
             using var db = new ContactContext();
-            var contact = db.Contacts.SingleOrDefault(c => c.ContactId == id);
+            var contact = db.Contacts
+                .Include(c => c.SocialGroup)
+                .SingleOrDefault(c => c.ContactId == id);
 
             return contact;
         }
@@ -44,9 +43,11 @@ namespace PhoneBook.Entity.Controllers
 
         internal static List<Contact> ListContacts()
         {
-            using var context = new ContactContext();
+            using var db = new ContactContext();
 
-            var contacts = context.Contacts.ToList();
+            var contacts = db.Contacts
+                .Include(c => c.SocialGroup)
+                .ToList();
 
             return contacts;
 

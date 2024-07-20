@@ -5,6 +5,7 @@
         internal enum MenuOption
         {
             AddSocialGroup,
+            DeleteSocialGroup,
             ViewAllSocialGroups,
             AddContact,
             DeleteContact,
