@@ -21,7 +21,7 @@ namespace PhoneBook.Entity.Migrations
 
             modelBuilder.Entity("PhoneBook.Entity.Contact", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ContactId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -37,7 +37,7 @@ namespace PhoneBook.Entity.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("ContactId");
 
                     b.ToTable("Contacts");
                 });

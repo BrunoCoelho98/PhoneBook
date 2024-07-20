@@ -1,6 +1,7 @@
-﻿using Spectre.Console;
+﻿using PhoneBook.Entity.Models;
+using Spectre.Console;
 
-namespace PhoneBook.Entity
+namespace PhoneBook.Entity.Controllers
 {
     internal class ContactController
     {
@@ -28,7 +29,7 @@ namespace PhoneBook.Entity
         internal static Contact GetContactById(int id)
         {
             using var db = new ContactContext();
-            var contact = db.Contacts.SingleOrDefault(c => c.Id == id);
+            var contact = db.Contacts.SingleOrDefault(c => c.ContactId == id);
 
             return contact;
         }

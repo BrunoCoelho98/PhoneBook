@@ -1,6 +1,8 @@
-﻿using Spectre.Console;
+﻿using PhoneBook.Entity.Controllers;
+using PhoneBook.Entity.Models;
+using Spectre.Console;
 
-namespace PhoneBook.Entity
+namespace PhoneBook.Entity.Services
 {
     internal class ContactService
     {
@@ -14,7 +16,7 @@ namespace PhoneBook.Entity
         {
             var contact = GetContactOptionInput();
 
-            contact.Name = AnsiConsole.Confirm("Edit Name?") 
+            contact.Name = AnsiConsole.Confirm("Edit Name?")
                 ? AnsiConsole.Ask<string>("Enter new name: ")
                 : contact.Name;
 
@@ -27,10 +29,10 @@ namespace PhoneBook.Entity
                 : contact.Email;
 
 
-         
+
             ContactController.EditContact(contact);
         }
-        
+
         static public Contact GetContactOptionInput()
         {
             var contacts = ContactController.ListContacts();
@@ -40,7 +42,7 @@ namespace PhoneBook.Entity
                                 .Title("Select a contact")
                                 .AddChoices(contactsArray)
                                 );
-            var id = contacts.Single(c => c.Name == contactName).Id;
+            var id = contacts.Single(c => c.Name == contactName).ContactId;
             var contact = ContactController.GetContactById(id);
 
             return contact;

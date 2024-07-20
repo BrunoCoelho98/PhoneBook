@@ -1,4 +1,8 @@
-﻿using Spectre.Console;
+﻿using PhoneBook.Entity.Controllers;
+using PhoneBook.Entity.Models;
+using PhoneBook.Entity.Services;
+using Spectre.Console;
+using static PhoneBook.Entity.Enums;
 
 
 namespace PhoneBook.Entity
@@ -14,11 +18,24 @@ namespace PhoneBook.Entity
                 var option = AnsiConsole.Prompt(
                     new SelectionPrompt<MenuOption>()
                         .Title("What would you like to do?")
-                                   .PageSize(10)
-                                              .AddChoices(MenuOption.AddContact, MenuOption.DeleteContact, MenuOption.EditContact, MenuOption.ViewContact, MenuOption.ListAllContacts, MenuOption.Exit)
-                                                 );
+                                              .AddChoices(
+                        MenuOption.AddSocialGroup,
+                        MenuOption.ViewAllSocialGroups,
+                        MenuOption.AddContact,
+                        MenuOption.DeleteContact,
+                        MenuOption.EditContact,
+                        MenuOption.ViewContact,
+                        MenuOption.ListAllContacts,
+                        MenuOption.Exit));
+
                 switch (option)
                 {
+                    case MenuOption.AddSocialGroup:
+                        SocialGroupService.AddSocialGroup();
+                        break;
+                    case MenuOption.ViewAllSocialGroups:
+                        SocialGroupService.GetSocialGroups();
+                        break;
                     case MenuOption.AddContact:
                         ContactController.AddContact();
                         break;
@@ -40,7 +57,7 @@ namespace PhoneBook.Entity
         }
         internal static void ShowContact(Contact contact)
         {
-            var panel = new Panel($@"Id: {contact.Id}
+            var panel = new Panel($@"ContactId: {contact.ContactId}
 Name: {contact.Name}");
                 panel.Header = new PanelHeader("Contact Information");
                 panel.Padding = new Padding(2, 2, 2, 2);
@@ -55,17 +72,36 @@ Name: {contact.Name}");
         static internal void ShowContactsTable(List<Contact> contacts)
         {
             var table = new Table();
-            table.AddColumn("Id");
+            table.AddColumn("ContactId");
             table.AddColumn("Name");
             table.AddColumn("Phone Number");
             table.AddColumn("Email");
 
             foreach (var contact in contacts)
             {
-                table.AddRow(contact.Id.ToString(), 
+                table.AddRow(contact.ContactId.ToString(), 
                     contact.Name,
                     contact.PhoneNumber,
                     contact.Email);
+            }
+
+            AnsiConsole.Write(table);
+
+            Console.WriteLine("Enter a key to continue");
+            Console.ReadLine();
+            Console.Clear();
+        }
+
+        static internal void ShowSocialGroupsTable(List<SocialGroup> socialGroups)
+        {
+            var table = new Table();
+            table.AddColumn("SocialGroupId");
+            table.AddColumn("Name");
+
+            foreach (var socialGroup in socialGroups)
+            {
+                table.AddRow(socialGroup.SocialGroupId.ToString(),
+                    socialGroup.Name);
             }
 
             AnsiConsole.Write(table);
