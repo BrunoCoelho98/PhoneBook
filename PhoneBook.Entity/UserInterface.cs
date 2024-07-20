@@ -17,53 +17,109 @@ namespace PhoneBook.Entity
             {
                 Console.Clear();
                 var option = AnsiConsole.Prompt(
-                    new SelectionPrompt<MenuOption>()
+                    new SelectionPrompt<MainMenuOptions>()
                         .Title("What would you like to do?")
                                               .AddChoices(
-                        MenuOption.AddSocialGroup,
-                        MenuOption.DeleteSocialGroup,
-                        MenuOption.EditSocialGroup,
-                        MenuOption.ViewSocialGroup,
-                        MenuOption.ViewAllSocialGroups,                    
-                        MenuOption.AddContact,
-                        MenuOption.DeleteContact,
-                        MenuOption.EditContact,
-                        MenuOption.ViewContact,
-                        MenuOption.ListAllContacts,
-                        MenuOption.Exit));
+                        MainMenuOptions.ManageContacts,
+                        MainMenuOptions.ManageSocialGroups,
+                        MainMenuOptions.Exit));
 
                 switch (option)
                 {
-                    case MenuOption.AddSocialGroup:
-                        SocialGroupService.AddSocialGroup();
+                    case MainMenuOptions.ManageContacts:
+                        ContactMenu();
                         break;
-                    case MenuOption.DeleteSocialGroup:
-                        SocialGroupService.DeleteSocialGroup();
+                    case MainMenuOptions.ManageSocialGroups:
+                        SocialGroupMenu();
                         break;
-                    case MenuOption.EditSocialGroup:
-                        SocialGroupService.EditSocialGroup();
+                    case MainMenuOptions.Exit:
+                        isRunning = false;
                         break;
-                    case MenuOption.ViewSocialGroup:
-                        SocialGroupService.GetSocialGroup();
-                        break;
-                    case MenuOption.ViewAllSocialGroups:
-                        SocialGroupService.GetSocialGroups();
-                        break;
-                    case MenuOption.AddContact:
+                }
+
+            }
+        }
+
+        static internal void ContactMenu()
+        {
+            var isContactMenuRunning = true;
+
+            while (isContactMenuRunning)
+            {
+                Console.Clear();
+                var option = AnsiConsole.Prompt(
+                    new SelectionPrompt<ContactOptions>()
+                        .Title("What would you like to do?")
+                                              .AddChoices(
+                        ContactOptions.ViewContact,
+                        ContactOptions.AddContact,
+                        ContactOptions.DeleteContact,
+                        ContactOptions.EditContact,
+                        ContactOptions.ListAllContacts,
+                        ContactOptions.GoBack));
+
+                switch (option)
+                {
+                    case ContactOptions.AddContact:
                         ContactService.AddContact();
                         break;
-                    case MenuOption.DeleteContact:
+                    case ContactOptions.DeleteContact:
                         ContactService.DeleteContact();
                         break;
-                    case MenuOption.EditContact:
+                    case ContactOptions.EditContact:
                         ContactService.EditContact();
                         break;
-                    case MenuOption.ViewContact:
+                    case ContactOptions.ViewContact:
                         var contact = ContactService.GetContactOptionInput();
                         UserInterface.ShowContact(contact);
                         break;
-                    case MenuOption.ListAllContacts:
+                    case ContactOptions.ListAllContacts:
                         UserInterface.ShowContactsTable(ContactController.ListContacts());
+                        break;
+                    case ContactOptions.GoBack:
+                        isContactMenuRunning = false;
+                        break;
+                }
+            }
+        }
+
+        static internal void SocialGroupMenu()
+        {
+            var IsSocialGroupMenuRunning = true;
+
+            while (IsSocialGroupMenuRunning)
+            {
+                Console.Clear();
+                var option = AnsiConsole.Prompt(
+                    new SelectionPrompt<SocialGroupOptions>()
+                        .Title("What would you like to do?")
+                                              .AddChoices(
+                        SocialGroupOptions.ViewSocialGroup,
+                        SocialGroupOptions.AddSocialGroup,
+                        SocialGroupOptions.DeleteSocialGroup,
+                        SocialGroupOptions.EditSocialGroup,
+                        SocialGroupOptions.ViewAllSocialGroups,
+                        SocialGroupOptions.GoBack));
+
+                switch (option)
+                {
+                    case SocialGroupOptions.AddSocialGroup:
+                        SocialGroupService.AddSocialGroup();
+                        break;
+                    case SocialGroupOptions.DeleteSocialGroup:
+                        SocialGroupService.DeleteSocialGroup();
+                        break;
+                    case SocialGroupOptions.EditSocialGroup:
+                        SocialGroupService.EditSocialGroup();
+                        break;
+                    case SocialGroupOptions.ViewSocialGroup:
+                        SocialGroupService.GetSocialGroup();
+                        break;
+                    case SocialGroupOptions.ViewAllSocialGroups:
+                        SocialGroupService.GetSocialGroups();
+                        break;
+                    case SocialGroupOptions.GoBack:
+                        IsSocialGroupMenuRunning = false;
                         break;
                 }
             }

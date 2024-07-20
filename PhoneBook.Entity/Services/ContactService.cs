@@ -1,5 +1,6 @@
 ﻿using PhoneBook.Entity.Controllers;
 using PhoneBook.Entity.Models;
+using PhoneBook.Entity.Utils;
 using Spectre.Console;
 
 namespace PhoneBook.Entity.Services
@@ -10,8 +11,8 @@ namespace PhoneBook.Entity.Services
         {
             var contact = new Contact();
             contact.Name = AnsiConsole.Ask<string>("Enter name: ");
-            contact.PhoneNumber = AnsiConsole.Ask<string>("Enter phone number: ");
-            contact.Email = AnsiConsole.Ask<string>("Enter email: ");
+            contact.PhoneNumber = Validator.GetPhoneNumber(AnsiConsole.Ask<string>("Enter phone number: "));
+            contact.Email = Validator.GetEmail(AnsiConsole.Ask<string>("Enter email: "));
             contact.SocialGroupId = SocialGroupService.GetSocialGroupOptionInput().SocialGroupId;
 
             ContactController.AddContact(contact);
@@ -32,11 +33,11 @@ namespace PhoneBook.Entity.Services
                 : contact.Name;
 
             contact.PhoneNumber = AnsiConsole.Confirm("Edit Phone Number?")
-                ? AnsiConsole.Ask<string>("Enter new phone number: ")
+                ? Validator.GetPhoneNumber(AnsiConsole.Ask<string>("Enter new phone number: "))
                 : contact.PhoneNumber;
 
             contact.Email = AnsiConsole.Confirm("Edit Email?")
-                ? AnsiConsole.Ask<string>("Enter new email: ")
+                ? Validator.GetEmail(AnsiConsole.Ask<string>("Enter new email: "))
                 : contact.Email;
 
             contact.SocialGroup = AnsiConsole.Confirm("Edit Social Group?")
