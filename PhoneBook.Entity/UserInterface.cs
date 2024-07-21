@@ -56,6 +56,7 @@ namespace PhoneBook.Entity
                         ContactOptions.DeleteContact,
                         ContactOptions.EditContact,
                         ContactOptions.ListAllContacts,
+                        ContactOptions.SendMessage,
                         ContactOptions.GoBack));
 
                 switch (option)
@@ -75,6 +76,9 @@ namespace PhoneBook.Entity
                         break;
                     case ContactOptions.ListAllContacts:
                         UserInterface.ShowContactsTable(ContactController.ListContacts());
+                        break;
+                    case ContactOptions.SendMessage:
+                        MessageService.SendMessage();
                         break;
                     case ContactOptions.GoBack:
                         isContactMenuRunning = false;
@@ -131,9 +135,23 @@ Name: {contact.Name}
 SocialGroup: {contact.SocialGroup.Name}");
                 panel.Header = new PanelHeader("Contact Information");
                 panel.Padding = new Padding(2, 2, 2, 2);
-                
+
+            // Display all the contact messages
+            var messages = MessageController.GetMessagesByContactId(contact.ContactId);
+
             AnsiConsole.Write(panel);
 
+            var table = new Table();
+            table.AddColumn("MessageId");
+            table.AddColumn("Content");
+                
+            // Display the messages
+            foreach (var message in messages)
+            {
+                table.AddRow(message.MessageId.ToString(), message.Content);
+            }
+
+            AnsiConsole.Write(table);
             Console.WriteLine("Enter a key to continue");
             Console.ReadLine();
             Console.Clear();

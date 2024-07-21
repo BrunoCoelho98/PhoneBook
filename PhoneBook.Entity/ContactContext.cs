@@ -9,6 +9,8 @@ namespace PhoneBook.Entity
 
         public DbSet<SocialGroup> SocialGroups { get; set; }
 
+        public DbSet<Message> Messages { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite($"Data Source=contacts.db");

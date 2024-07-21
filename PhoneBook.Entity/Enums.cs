@@ -28,6 +28,7 @@ namespace PhoneBook.Entity
             EditContact,
             ViewContact,
             ListAllContacts,
+            SendMessage,
             GoBack
         }
     }
