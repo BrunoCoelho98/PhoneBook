@@ -14,7 +14,7 @@ This project demonstrates a basic Phone Book application built using C# and Enti
 
 ## Requirements
 
-- .NET 6.0 or later
+- .NET 8.0 or later
 - SQLite
 
 ## Usage
